@@ -20,5 +20,10 @@ namespace RayTracingLib
 			set;
 		}
 
+		public Ray(Vector3 Position,Vector3 Direction)
+		{
+			this.Position = Position;this.Direction = Direction;
+		}
+
 	}
 }
