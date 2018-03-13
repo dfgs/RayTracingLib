@@ -25,12 +25,12 @@ namespace RayTracingLib.Primitives
 		}
 
 
-		public override float? Intersect(Ray Ray)
+		public override Intersection Intersect(Ray Ray)
 		{
-			float t0, t1; // solutions for t if the ray intersects
+			float t,t0, t1; // solutions for t if the ray intersects
 			Matrix4x4 transform;
 			float radius2;
-
+			Vector3 normal,position;
 
 			transform = GetTransformationMatrix();
 
@@ -38,7 +38,7 @@ namespace RayTracingLib.Primitives
 
 			// geometric solution
 			Vector3 L = transform.Translation - Ray.Position;
-			float tca = Vector3.Dot(L,Vector3.Normalize(Ray.Direction));
+			float tca = Vector3.Dot(L,Ray.Direction);
 			// if (tca < 0) return false;
 			float d2 = L.LengthSquared() - tca * tca;
 			if (d2 > radius2) return null;
@@ -46,8 +46,11 @@ namespace RayTracingLib.Primitives
 			t0 = tca - thc;
 			t1 = tca + thc;
 
-			if (t0 < t1) return t0;
-			else return t1;
+			t = Math.Min(t0, t1);
+
+			position = Ray.Position + t * Ray.Direction;
+			normal = Vector3.Normalize(position - transform.Translation);
+			return new Intersection(t, position, normal);
 		}
 
 	}

@@ -9,6 +9,6 @@ namespace RayTracingLib.Primitives
 	public abstract class Primitive:SceneObject
 	{
 
-		public abstract float? Intersect(Ray Ray);
+		public abstract Intersection Intersect(Ray Ray);
 	}
 }

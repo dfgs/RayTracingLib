@@ -32,13 +32,17 @@ namespace test
 			InitializeComponent();
 
 			Sphere sphere;
-			sphere = new Sphere(1);
-			sphere.Transformations.Add(new Translation(0, 0, -5));
 
 			scene = new Scene();
 			scene.Camera = new PerspectiveCamera(320,200,60);
 			scene.Camera.Transformations.Add(new LookAt(Vector3.Zero, new Vector3(0, 0, -5), Vector3.UnitY));
 			//scene.Camera.Transformations.Add(new Translation(-1, -1, 0));
+
+			sphere = new Sphere(1);
+			sphere.Transformations.Add(new Translation(-0.5f, 0, -5));
+			scene.Primitives.Add(sphere);
+			sphere = new Sphere(1.5f);
+			sphere.Transformations.Add(new Translation(0.5f, 0, -5));
 			scene.Primitives.Add(sphere);
 
 		}

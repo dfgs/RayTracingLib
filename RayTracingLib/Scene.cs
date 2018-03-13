@@ -82,7 +82,7 @@ namespace RayTracingLib
 					viewPosition = Vector3.Transform(ndcPosition, invertedProjectionMatrix);
 					worldPosition = Vector3.Transform(viewPosition, viewMatrix); 
 					
-					rayDirection = worldPosition - viewMatrix.Translation;
+					rayDirection = Vector3.Normalize(worldPosition - viewMatrix.Translation);
 
 					
 					ray = new Ray(viewMatrix.Translation, rayDirection);
@@ -103,16 +103,28 @@ namespace RayTracingLib
 
 		}
 
+		private Intersection GetIntersection(Ray Ray)
+		{
+			Intersection intersection, minIntersection;
+
+			minIntersection = null;
+			foreach (Primitive primitive in Primitives)
+			{
+				intersection = primitive.Intersect(Ray);
+				if ((intersection == null) || (intersection.Time<0)) continue;
+				if ((minIntersection == null) || (minIntersection.Time > intersection.Time)) minIntersection = intersection;
+			}
+			return minIntersection;
+		}
+
 		private Color RayCast(Ray Ray)
 		{
-			float? time;
+			Intersection intersection;
 
-			foreach(Primitive primitive in Primitives)
-			{
-				time = primitive.Intersect(Ray);
-				if ((time.HasValue) && (time.Value>=0)) return Colors.Gray;
-			}
-			return Colors.Black;
+			intersection = GetIntersection(Ray);
+			if (intersection == null) return Colors.Black;
+
+			return Colors.Gray;
 		}
 
 
