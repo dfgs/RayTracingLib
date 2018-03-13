@@ -120,11 +120,22 @@ namespace RayTracingLib
 		private Color RayCast(Ray Ray)
 		{
 			Intersection intersection;
+			Vector3 reflectedRay;
+			float l,val;
 
 			intersection = GetIntersection(Ray);
 			if (intersection == null) return Colors.Black;
 
-			return Colors.Gray;
+			reflectedRay=Vector3.Reflect(Ray.Direction, intersection.Normal);
+
+			l = 0;
+			foreach(DirectionalLight light in Lights)
+			{
+				val=0.5f*( 1-Vector3.Dot(reflectedRay, light.Direction));
+				if (val > 0) l += val;
+			}
+			l = Math.Min(l, 1);
+			return Color.FromArgb(255, (byte)(l * 255), (byte)(l * 255), (byte)(l * 255));
 		}
 
 

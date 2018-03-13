@@ -1,5 +1,6 @@
 ﻿using RayTracingLib;
 using RayTracingLib.Cameras;
+using RayTracingLib.Lights;
 using RayTracingLib.Primitives;
 using RayTracingLib.Transformations;
 using System;
@@ -32,6 +33,7 @@ namespace test
 			InitializeComponent();
 
 			Sphere sphere;
+			Light light;
 
 			scene = new Scene();
 			scene.Camera = new PerspectiveCamera(320,200,60);
@@ -41,9 +43,12 @@ namespace test
 			sphere = new Sphere(1);
 			sphere.Transformations.Add(new Translation(-0.5f, 0, -5));
 			scene.Primitives.Add(sphere);
-			sphere = new Sphere(1.5f);
+			sphere = new Sphere(1.25f);
 			sphere.Transformations.Add(new Translation(0.5f, 0, -5));
 			scene.Primitives.Add(sphere);
+
+			light = new DirectionalLight();
+			scene.Lights.Add(light);
 
 		}
 
